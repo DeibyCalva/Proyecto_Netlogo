@@ -5,6 +5,7 @@ breed[lightsL lightL]
 breed[lightsU lightU]
 breed[lightsD lightD]
 breed[persona people]
+breed[personavvvvvvvvvvvvvvvvvvv peoplevvvvvvvvvvvvvvvv]
 patches-own[
   Rol-ejerce        ;;the role of the patch
   will-cross?    ;;Alguien va a cruzar este cruce
@@ -675,11 +676,7 @@ to walk
 end
 
 to CruzarCalle
-  if crossing-part = 1[
-    face min-one-of patches with [Rol-ejerce = "waitpoint2"] in-radius 4 [abs([xcor] of myself - pxcor)]
-    ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used + 1]
-    set crossing-part 2
-  ]
+
   if crossing-part = 2 [
     if heading > 315 and heading < 45 [set heading 0]
     if heading > 45 and heading < 135 [set heading 90]
@@ -791,7 +788,7 @@ num_carros
 num_carros
 0
 200
-175
+3
 1
 1
 NIL
