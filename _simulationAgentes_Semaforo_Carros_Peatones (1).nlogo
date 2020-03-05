@@ -144,7 +144,7 @@ to dibujar-caminos ;; caminos sin asfaltar
   ask patches with [pxcor mod 40 = 36 and meaning != "crossroad"] [
     set pcolor 2
     sprout 1 [
-     
+
       set shape "road2"
       set color 2
       set heading 270
@@ -568,7 +568,7 @@ to mover-carros
       set will-turn? "maybe"
     ]
 
-    check-crossing
+    comprovar-cruse
 
     ;whether traffic lights show red or green
     ifelse not any? (luces-Derc-on patch-ahead 1.5) with [color = red] and not any? (lightsL-on patch-ahead 1.5) with [color = red]
@@ -577,7 +577,7 @@ to mover-carros
   ]
 end
 
-to check-crossing
+to comprovar-cruse
 
   if [meaning] of patch-ahead 1 = "crossing" and will-stop? = "maybe"[
     if [used] of patch-ahead 1 = 0 and will-stop? = "maybe"[
