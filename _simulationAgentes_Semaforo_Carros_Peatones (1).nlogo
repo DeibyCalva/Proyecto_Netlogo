@@ -144,6 +144,7 @@ to dibujar-caminos ;; caminos sin asfaltar
   ask patches with [pxcor mod 40 = 36 and meaning != "crossroad"] [
     set pcolor 2
     sprout 1 [
+      set chupala fercho
       set shape "road2"
       set color 2
       set heading 270
