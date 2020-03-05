@@ -4,7 +4,7 @@ breed[luces-Derc lightR]
 breed[lightsL lightL]
 breed[lightsU lightU]
 breed[lightsD lightD]
-breed[persona people]
+breed[personavvvvvvvvvvvv peoplevvvvvvvv]
 patches-own[
   Rol-ejerce        ;;the role of the patch
   will-cross?    ;;Alguien va a cruzar este cruce
