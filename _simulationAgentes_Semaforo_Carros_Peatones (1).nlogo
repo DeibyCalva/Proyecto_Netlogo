@@ -6,7 +6,7 @@ breed[lightsU lightU]
 breed[lightsD lightD]
 breed[persona people]
 patches-own[
-  meaning        ;;the role of the patch
+  Rol-ejerce        ;;the role of the patch
   will-cross?    ;;Alguien va a cruzar este cruce
   used           ;;dice cuántos 0peatones están usando este cruce
   traffic        ;;dice cuántos coches cruzarán este cruce, si el tráfico > 0, es peligroso para los peatones
@@ -116,11 +116,11 @@ to dibujar-caminos ;; caminos sin asfaltar
   ask patches with [(pxcor mod 40 = 39 or pxcor mod 40 = 0 or pxcor mod 40 = 36 or pxcor mod 40 = 37 or pxcor mod 40 = 38 )
     and (pycor mod 22 = 21 or pycor mod 22 = 0 or pycor mod 22 = 19 or pycor mod 22 = 18 or pycor mod 22 = 20)] [
   set pcolor 2
-  set meaning "crossroad"
+  set Rol-ejerce "crossroad"
     ]
 
   ;roads-up ;;;; caminos hacia arriba
-  ask patches with [pxcor mod 40 = 39 and meaning != "crossroad"] [
+  ask patches with [pxcor mod 40 = 39 and Rol-ejerce != "crossroad"] [
     set pcolor  2
     sprout 1 [
       set shape "road2"
@@ -128,9 +128,9 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 270
       stamp die
     ]
-    set meaning "road-up"]
+    set Rol-ejerce "road-up"]
 
-  ask patches with [pxcor mod 40 = 0 and meaning != "crossroad"] [
+  ask patches with [pxcor mod 40 = 0 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
       set shape "road2"
@@ -138,10 +138,10 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 90
       stamp die
     ]
-    set meaning "road-up"]
+    set Rol-ejerce "road-up"]
 
   ;roads-down   ;;; caminos hacia abajo
-  ask patches with [pxcor mod 40 = 36 and meaning != "crossroad"] [
+  ask patches with [pxcor mod 40 = 36 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
 
@@ -150,9 +150,9 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 270
       stamp die
     ]
-    set meaning "road-down"]
+    set Rol-ejerce "road-down"]
 
-  ask patches with [pxcor mod 40 = 37 and meaning != "crossroad"] [
+  ask patches with [pxcor mod 40 = 37 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
       set shape "road2"
@@ -160,10 +160,10 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 90
       stamp die
     ]
-    set meaning "road-down"]
+    set Rol-ejerce "road-down"]
 
   ;roads-right;;;;; caminos a la derecha
-  ask patches with [pycor mod 22 = 21 and meaning != "crossroad"] [
+  ask patches with [pycor mod 22 = 21 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
       set shape "road2"
@@ -171,9 +171,9 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 180
       stamp die
     ]
-    set meaning "road-left"]
+    set Rol-ejerce "road-left"]
 
-  ask patches with [pycor mod 22 = 0 and meaning != "crossroad"] [
+  ask patches with [pycor mod 22 = 0 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
       set shape "road2"
@@ -181,10 +181,10 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 0
       stamp die
     ]
-    set meaning "road-left"]
+    set Rol-ejerce "road-left"]
 
   ;roads-left;;; carreteras-izquierda
-  ask patches with [pycor mod 22 = 19 and meaning != "crossroad"] [
+  ask patches with [pycor mod 22 = 19 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
       set shape "road2"
@@ -192,9 +192,9 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 0
       stamp die
     ]
-    set meaning "road-right"]
+    set Rol-ejerce "road-right"]
 
-  ask patches with [pycor mod 22 = 18 and meaning != "crossroad"] [
+  ask patches with [pycor mod 22 = 18 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
       set shape "road2"
@@ -202,9 +202,9 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 180
       stamp die
     ]
-    set meaning "road-right"]
+    set Rol-ejerce "road-right"]
 
-  ask patches with [pxcor mod 40 = 38 and meaning != "crossroad"] [
+  ask patches with [pxcor mod 40 = 38 and Rol-ejerce != "crossroad"] [
     set pcolor 6
     sprout 1 [
       set shape "road-middle"
@@ -213,11 +213,11 @@ to dibujar-caminos ;; caminos sin asfaltar
       stamp
       die
     ]
-    set meaning "road-middle-v"
+    set Rol-ejerce "road-middle-v"
   ]
 
   ;the middle lanes;;;;los carriles del medio
-  ask patches with [pycor mod 22 = 20 and meaning != "crossroad"] [
+  ask patches with [pycor mod 22 = 20 and Rol-ejerce != "crossroad"] [
     set pcolor 6
     sprout 1 [
       set shape "road-middle"
@@ -226,7 +226,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       stamp
       die
     ]
-    set meaning "road-middle-h"
+    set Rol-ejerce "road-middle-h"
   ]
 end
 
@@ -243,14 +243,14 @@ to dibujar-acera
     stamp
     die
   ]
-  set meaning "sidewalk"]
+  set Rol-ejerce "sidewalk"]
 
 end
 
 to dibujar-paso-peatonal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CRUCES PEATONAL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; crear pares de cruces en las carreteras de arriba
-  ask patches with [(meaning = "road-up" or meaning = "road-down" or meaning = "road-middle-v") and (pycor mod 22 = 8 or pycor mod 22 = 9)][
+  ask patches with [(Rol-ejerce = "road-up" or Rol-ejerce = "road-down" or Rol-ejerce = "road-middle-v") and (pycor mod 22 = 8 or pycor mod 22 = 9)][
     sprout-crossings 1 [
       set shape "crossing"
       set color white
@@ -270,14 +270,14 @@ to dibujar-paso-peatonal
   ;create waitpoints for pedestrians
   ask crossings with [pxcor mod 40 = 38] [
     set shape "waitpoint"
-    set meaning "waitpoint2"
+    set Rol-ejerce "waitpoint2"
     set color green + 1
     stamp die
   ]
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;crear pares de cruces en las carreteras de abajo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ;create pairs of crossings on roads-down
-  ask patches with [(meaning = "road-left" or meaning = "road-right" or meaning = "road-middle-h") and (pxcor mod 40 = 18 or pxcor mod 40 = 19)][
+  ask patches with [(Rol-ejerce = "road-left" or Rol-ejerce = "road-right" or Rol-ejerce = "road-middle-h") and (pxcor mod 40 = 18 or pxcor mod 40 = 19)][
     sprout-crossings 1 [
       set shape "crossing"
       set heading 90
@@ -298,7 +298,7 @@ to dibujar-paso-peatonal
   ask crossings with [pycor mod 22 = 20] [
     set heading 90
     set shape "waitpoint"
-    set meaning "waitpoint2"
+    set Rol-ejerce "waitpoint2"
     set color white
     stamp die
   ]
@@ -307,15 +307,15 @@ to dibujar-paso-peatonal
   ;;fila necesaria para los cruces en los bordes (la función en el radio no funciona)
   ask crossings [
     set will-cross? false
-    set meaning "crossing"
+    set Rol-ejerce "crossing"
     stamp
     die
   ]
 
-  ask patches with [meaning = "crossing"] [
+  ask patches with [Rol-ejerce = "crossing"] [
     ask neighbors4 [
-      if meaning = "sidewalk" [
-        set meaning "waitpoint"
+      if Rol-ejerce = "sidewalk" [
+        set Rol-ejerce "waitpoint"
         ]
       ]
     ]
@@ -324,8 +324,8 @@ end
 to colocar-carros
 
   ;make a random placement of cars
-  ask n-of (num_carros / 3) patches with [meaning = "road-up"] [
-    if not any? carros-on patch pxcor (pycor + 1) and not any? carros-here and not any? carros-on patch pxcor (pycor - 1) and not any? patches with [meaning = "crossing"] in-radius 2 [
+  ask n-of (num_carros / 3) patches with [Rol-ejerce = "road-up"] [
+    if not any? carros-on patch pxcor (pycor + 1) and not any? carros-here and not any? carros-on patch pxcor (pycor - 1) and not any? patches with [Rol-ejerce = "crossing"] in-radius 2 [
       sprout-carros 1 [
         set size 2
         set will-turn? "maybe"
@@ -343,8 +343,8 @@ to colocar-carros
     ]
   ]
 
-  ask n-of (num_carros / 3) patches with [meaning = "road-down" and count turtles-on neighbors = 0] [
-    if not any? carros-on patch pxcor (pycor + 1) and not any? carros-here and not any? carros-on patch pxcor (pycor - 1) and not any? patches with [meaning = "crossing"] in-radius 2 [
+  ask n-of (num_carros / 3) patches with [Rol-ejerce = "road-down" and count turtles-on neighbors = 0] [
+    if not any? carros-on patch pxcor (pycor + 1) and not any? carros-here and not any? carros-on patch pxcor (pycor - 1) and not any? patches with [Rol-ejerce = "crossing"] in-radius 2 [
       sprout-carros 1 [
         set size 2
         set shape "car top"
@@ -362,8 +362,8 @@ to colocar-carros
     ]
   ]
 
-  ask n-of (num_carros / 3) patches with [meaning = "road-left" and count turtles-on neighbors = 0] [
-    if not any? carros-on patch (pxcor + 1) pycor and not any? carros-here and not any? carros-on patch (pxcor - 1) pycor and not any? patches with [meaning = "crossing"] in-radius 2 [
+  ask n-of (num_carros / 3) patches with [Rol-ejerce = "road-left" and count turtles-on neighbors = 0] [
+    if not any? carros-on patch (pxcor + 1) pycor and not any? carros-here and not any? carros-on patch (pxcor - 1) pycor and not any? patches with [Rol-ejerce = "crossing"] in-radius 2 [
       sprout-carros 1 [
         set will-turn? "maybe"
         set will-stop? "maybe"
@@ -382,8 +382,8 @@ to colocar-carros
   ]
 
   while [count carros < num_carros] [
-    ask one-of patches with [meaning = "road-right"] [
-      if not any? carros-on patch (pxcor + 1) pycor and not any? carros-here and not any? carros-on patch (pxcor - 1) pycor and not any? patches with [meaning = "crossing"] in-radius 2 [
+    ask one-of patches with [Rol-ejerce = "road-right"] [
+      if not any? carros-on patch (pxcor + 1) pycor and not any? carros-here and not any? carros-on patch (pxcor - 1) pycor and not any? patches with [Rol-ejerce = "crossing"] in-radius 2 [
         sprout-carros 1 [
           set will-turn? "maybe"
           set will-stop? "maybe"
@@ -406,7 +406,7 @@ end
 
 to colocar-personas
   while [count persona < num_personas] [
-    ask one-of patches with [meaning = "sidewalk"] [
+    ask one-of patches with [Rol-ejerce = "sidewalk"] [
       sprout-persona 1 [
         set velocidad-persona  random 7 + 5
         set size 2
@@ -471,16 +471,16 @@ to control-velocidad
         set  velocidad-carros  velocidad-carros - deceleration
       ] [
       ;try to overtake
-      ifelse [meaning] of patch-left-and-ahead 90 1 = meaning and not any? turtles-on patch-left-and-ahead 90 1 and [meaning] of patch-left-and-ahead 90 1 != "crossroad"
-      and meaning != "crossing" and [meaning] of patch-left-and-ahead 180 1.3 != "crossing" and not any? turtles-on patch-left-and-ahead 169 3
+      ifelse [Rol-ejerce] of patch-left-and-ahead 90 1 = Rol-ejerce and not any? turtles-on patch-left-and-ahead 90 1 and [Rol-ejerce] of patch-left-and-ahead 90 1 != "crossroad"
+      and Rol-ejerce != "crossing" and [Rol-ejerce] of patch-left-and-ahead 180 1.3 != "crossing" and not any? turtles-on patch-left-and-ahead 169 3
       and not any? turtles-on patch-left-and-ahead 45 1 and not any? turtles-on patch-left-and-ahead 135 1 and not any? turtles-on patch-left-and-ahead 23 2
-      and not any? turtles-on patch-left-and-ahead 157 2 and not any? turtles-on patch-left-and-ahead 12 3 and [meaning] of patch-ahead 1 != "crossing" [move-to patch-left-and-ahead 90 1] [
+      and not any? turtles-on patch-left-and-ahead 157 2 and not any? turtles-on patch-left-and-ahead 12 3 and [Rol-ejerce] of patch-ahead 1 != "crossing" [move-to patch-left-and-ahead 90 1] [
 
 
-        ifelse [meaning] of patch-right-and-ahead 90 1 = meaning and not any? turtles-on patch-right-and-ahead 90 14 and [meaning] of patch-right-and-ahead 90 1 != "crossroad"
-        and meaning != "crossing" and [meaning] of patch-right-and-ahead 180 1.3 != "crossing" and not any? turtles-on patch-right-and-ahead 12 3
+        ifelse [Rol-ejerce] of patch-right-and-ahead 90 1 = Rol-ejerce and not any? turtles-on patch-right-and-ahead 90 14 and [Rol-ejerce] of patch-right-and-ahead 90 1 != "crossroad"
+        and Rol-ejerce != "crossing" and [Rol-ejerce] of patch-right-and-ahead 180 1.3 != "crossing" and not any? turtles-on patch-right-and-ahead 12 3
         and not any? turtles-on patch-right-and-ahead 45 1 and not any? turtles-on patch-right-and-ahead 135 1 and not any? turtles-on patch-right-and-ahead 23 2
-        and not any? turtles-on patch-right-and-ahead 157 2 and not any? turtles-on patch-right-and-ahead 169 3 and [meaning] of patch-ahead 1 != "crossing"[move-to patch-right-and-ahead 90 1] [
+        and not any? turtles-on patch-right-and-ahead 157 2 and not any? turtles-on patch-right-and-ahead 169 3 and [Rol-ejerce] of patch-ahead 1 != "crossing"[move-to patch-right-and-ahead 90 1] [
           set  velocidad-carros [ velocidad-carros] of car-ahead
           set  velocidad-carros  velocidad-carros - deceleration]
       ]
@@ -564,7 +564,7 @@ to mover-carros
 
     ]
 
-    if meaning = "crossing" [
+    if Rol-ejerce = "crossing" [
       set will-turn? "maybe"
     ]
 
@@ -579,12 +579,12 @@ end
 
 to comprovar-cruse
 
-  if [meaning] of patch-ahead 1 = "crossing" and will-stop? = "maybe"[
+  if [Rol-ejerce] of patch-ahead 1 = "crossing" and will-stop? = "maybe"[
     if [used] of patch-ahead 1 = 0 and will-stop? = "maybe"[
       set will-stop? "no"
       ask patch-ahead 1 [
         set traffic traffic + 1
-        ask other neighbors with [meaning = "crossing"] [set traffic traffic + 1]
+        ask other neighbors with [Rol-ejerce = "crossing"] [set traffic traffic + 1]
       ]
     ]
     if [used] of patch-ahead 1 > 0 and will-stop? = "maybe"[
@@ -596,24 +596,24 @@ to comprovar-cruse
         set will-stop? "no"
         ask patch-ahead 1 [
           set traffic traffic + 1
-          ask other neighbors with [meaning = "crossing"] [set traffic traffic + 1]
+          ask other neighbors with [Rol-ejerce = "crossing"] [set traffic traffic + 1]
         ]
         if any? persona-on patch-ahead 1 or any? persona-on patch-ahead 2 [set  velocidad-carros 0]
       ]
     ]
   ]
 
-  if [meaning] of patch-ahead 1 = "crossing" and [meaning] of patch-ahead 2 = "crossing" and will-stop? = "yes" and [used] of patch-ahead 1 > 0 [set  velocidad-carros 0]
+  if [Rol-ejerce] of patch-ahead 1 = "crossing" and [Rol-ejerce] of patch-ahead 2 = "crossing" and will-stop? = "yes" and [used] of patch-ahead 1 > 0 [set  velocidad-carros 0]
 
-  if [meaning] of patch-left-and-ahead 180 1 = "crossing" and [meaning] of patch-left-and-ahead 180 2 = "crossing" and will-stop? = "no" and meaning != "crossing" [
+  if [Rol-ejerce] of patch-left-and-ahead 180 1 = "crossing" and [Rol-ejerce] of patch-left-and-ahead 180 2 = "crossing" and will-stop? = "no" and Rol-ejerce != "crossing" [
     set will-stop? "maybe"
     ask patch-left-and-ahead 180 1 [
       set traffic traffic - 1
-      ask other neighbors with [meaning = "crossing"] [set traffic traffic - 1]
+      ask other neighbors with [Rol-ejerce = "crossing"] [set traffic traffic - 1]
     ]
   ]
 
-  if meaning = "crossroad" and will-stop? != "maybe" [
+  if Rol-ejerce = "crossroad" and will-stop? != "maybe" [
     set will-stop? "maybe"
   ]
 
@@ -644,10 +644,10 @@ to mover-personas
         CruzarCalle
         stop
       ]
-      if meaning = "waitpoint" [
+      if Rol-ejerce = "waitpoint" [
         set crossing-part 1
       ]
-      face min-one-of patches with [meaning = "waitpoint"] [distance myself]
+      face min-one-of patches with [Rol-ejerce = "waitpoint"] [distance myself]
       walk
     ]
     [walk]
@@ -656,7 +656,7 @@ to mover-personas
 end
 
 to walk
-  ifelse [meaning] of patch-ahead 1 = "sidewalk" or [meaning] of patch-ahead 1 = "waitpoint" [
+  ifelse [Rol-ejerce] of patch-ahead 1 = "sidewalk" or [Rol-ejerce] of patch-ahead 1 = "waitpoint" [
     ifelse any? other persona-on patch-ahead 1 [
       rt random 45
       lt  random 45
@@ -667,7 +667,7 @@ to walk
   [
     rt random 120
     lt random 120
-    if [meaning] of patch-ahead 1 = "sidewalk" or [meaning] of patch-ahead 1 = "waitpoint" [
+    if [Rol-ejerce] of patch-ahead 1 = "sidewalk" or [Rol-ejerce] of patch-ahead 1 = "waitpoint" [
       fd velocidad-persona / 200
     ]
     set walk-time walk-time + 1
@@ -676,8 +676,8 @@ end
 
 to CruzarCalle
   if crossing-part = 1[
-    face min-one-of patches with [meaning = "waitpoint2"] in-radius 4 [abs([xcor] of myself - pxcor)]
-    ask patches in-cone 3 180 with [meaning = "crossing"] [set used used + 1]
+    face min-one-of patches with [Rol-ejerce = "waitpoint2"] in-radius 4 [abs([xcor] of myself - pxcor)]
+    ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used + 1]
     set crossing-part 2
   ]
   if crossing-part = 2 [
@@ -686,26 +686,26 @@ to CruzarCalle
     if heading > 135 and heading < 225 [set heading 180]
     if heading > 225 and heading < 315 [set heading 270]
   ]
-  if meaning = "waitpoint2" and crossing-part = 2 [
+  if Rol-ejerce = "waitpoint2" and crossing-part = 2 [
     rt 180
-    ask patches in-cone 3 180 with [meaning = "crossing"] [set used used - 1]
+    ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used - 1]
     lt 180
-    ask patches in-cone 3 180 with [meaning = "crossing"] [set used used + 1]
+    ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used + 1]
     set crossing-part 3
   ]
-  if crossing-part = 3 and meaning = "waitpoint" [
+  if crossing-part = 3 and Rol-ejerce = "waitpoint" [
     rt 180
-    ask patches in-cone 3 180 with [meaning = "crossing"] [set used used - 1]
+    ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used - 1]
     lt 180
     set crossing-part 0
     set walk-time 0
   ]
-  ifelse meaning = "waitpoint" and crossing-part = 2  and ([traffic] of patch-ahead 1 > 0 or [traffic] of patch-ahead 2 > 0) [
+  ifelse Rol-ejerce = "waitpoint" and crossing-part = 2  and ([traffic] of patch-ahead 1 > 0 or [traffic] of patch-ahead 2 > 0) [
     fd 0
     set waiting? true
   ]
   [
-    ifelse meaning = "waitpoint2" and crossing-part = 3 and ([traffic] of patch-ahead 1 > 0 or [traffic] of patch-ahead 2 > 0)[
+    ifelse Rol-ejerce = "waitpoint2" and crossing-part = 3 and ([traffic] of patch-ahead 1 > 0 or [traffic] of patch-ahead 2 > 0)[
       fd 0
       set waiting? true
     ]
@@ -791,7 +791,7 @@ num_carros
 num_carros
 0
 200
-33
+175
 1
 1
 NIL
@@ -806,7 +806,7 @@ intervalo_luces
 intervalo_luces
 1
 50
-10
+5
 1
 1
 NIL
@@ -881,7 +881,7 @@ probabilidad-giro
 probabilidad-giro
 0
 100
-100
+30
 1
 1
 NIL
