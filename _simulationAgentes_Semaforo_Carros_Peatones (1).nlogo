@@ -48,7 +48,6 @@ to configurar                     ;; inicia la configuracion
   colocar-luces              ;; luces de posicion
   colocar-personas              ;; colocar a la gente
   ask patches [parcela_fondo]
-
   reset-ticks
   tick
 
@@ -116,7 +115,7 @@ to dibujar-caminos ;; caminos sin asfaltar
   ask patches with [(pxcor mod 40 = 39 or pxcor mod 40 = 0 or pxcor mod 40 = 36 or pxcor mod 40 = 37 or pxcor mod 40 = 38 )
     and (pycor mod 22 = 21 or pycor mod 22 = 0 or pycor mod 22 = 19 or pycor mod 22 = 18 or pycor mod 22 = 20)] [
   set pcolor 2
-  set Rol-ejerce "crossroad"
+  set Rol-ejerce"crossroad"
     ]
 
   ;roads-up ;;;; caminos hacia arriba
@@ -128,7 +127,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 270
       stamp die
     ]
-    set Rol-ejerce "road-up"]
+    set Rol-ejerce"road-up"]
 
   ask patches with [pxcor mod 40 = 0 and Rol-ejerce != "crossroad"] [
     set pcolor 2
@@ -138,19 +137,18 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 90
       stamp die
     ]
-    set Rol-ejerce "road-up"]
+    set Rol-ejerce"road-up"]
 
   ;roads-down   ;;; caminos hacia abajo
   ask patches with [pxcor mod 40 = 36 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
-
       set shape "road2"
       set color 2
       set heading 270
       stamp die
     ]
-    set Rol-ejerce "road-down"]
+    set Rol-ejerce"road-down"]
 
   ask patches with [pxcor mod 40 = 37 and Rol-ejerce != "crossroad"] [
     set pcolor 2
@@ -160,7 +158,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 90
       stamp die
     ]
-    set Rol-ejerce "road-down"]
+    set Rol-ejerce"road-down"]
 
   ;roads-right;;;;; caminos a la derecha
   ask patches with [pycor mod 22 = 21 and Rol-ejerce != "crossroad"] [
@@ -171,7 +169,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 180
       stamp die
     ]
-    set Rol-ejerce "road-left"]
+    set Rol-ejerce"road-left"]
 
   ask patches with [pycor mod 22 = 0 and Rol-ejerce != "crossroad"] [
     set pcolor 2
@@ -181,7 +179,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 0
       stamp die
     ]
-    set Rol-ejerce "road-left"]
+    set Rol-ejerce"road-left"]
 
   ;roads-left;;; carreteras-izquierda
   ask patches with [pycor mod 22 = 19 and Rol-ejerce != "crossroad"] [
@@ -192,7 +190,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 0
       stamp die
     ]
-    set Rol-ejerce "road-right"]
+    set Rol-ejerce"road-right"]
 
   ask patches with [pycor mod 22 = 18 and Rol-ejerce != "crossroad"] [
     set pcolor 2
@@ -202,7 +200,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       set heading 180
       stamp die
     ]
-    set Rol-ejerce "road-right"]
+    set Rol-ejerce"road-right"]
 
   ask patches with [pxcor mod 40 = 38 and Rol-ejerce != "crossroad"] [
     set pcolor 6
@@ -213,7 +211,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       stamp
       die
     ]
-    set Rol-ejerce "road-middle-v"
+    set Rol-ejerce"road-middle-v"
   ]
 
   ;the middle lanes;;;;los carriles del medio
@@ -226,7 +224,7 @@ to dibujar-caminos ;; caminos sin asfaltar
       stamp
       die
     ]
-    set Rol-ejerce "road-middle-h"
+    set Rol-ejerce"road-middle-h"
   ]
 end
 
@@ -243,7 +241,7 @@ to dibujar-acera
     stamp
     die
   ]
-  set Rol-ejerce "sidewalk"]
+  set Rol-ejerce"PasoPeatonal"]
 
 end
 
@@ -270,7 +268,7 @@ to dibujar-paso-peatonal
   ;create waitpoints for pedestrians
   ask crossings with [pxcor mod 40 = 38] [
     set shape "waitpoint"
-    set Rol-ejerce "waitpoint2"
+    set Rol-ejerce"waitpoint2"
     set color green + 1
     stamp die
   ]
@@ -298,7 +296,7 @@ to dibujar-paso-peatonal
   ask crossings with [pycor mod 22 = 20] [
     set heading 90
     set shape "waitpoint"
-    set Rol-ejerce "waitpoint2"
+    set Rol-ejerce"waitpoint2"
     set color white
     stamp die
   ]
@@ -307,15 +305,15 @@ to dibujar-paso-peatonal
   ;;fila necesaria para los cruces en los bordes (la función en el radio no funciona)
   ask crossings [
     set will-cross? false
-    set Rol-ejerce "crossing"
+    set Rol-ejerce"crossing"
     stamp
     die
   ]
 
   ask patches with [Rol-ejerce = "crossing"] [
     ask neighbors4 [
-      if Rol-ejerce = "sidewalk" [
-        set Rol-ejerce "waitpoint"
+      if Rol-ejerce = "PasoPeatonal" [
+        set Rol-ejerce"waitpoint"
         ]
       ]
     ]
@@ -406,7 +404,7 @@ end
 
 to colocar-personas
   while [count persona < num_personas] [
-    ask one-of patches with [Rol-ejerce = "sidewalk"] [
+    ask one-of patches with [Rol-ejerce = "PasoPeatonal"] [
       sprout-persona 1 [
         set velocidad-persona  random 7 + 5
         set size 2
@@ -568,7 +566,7 @@ to mover-carros
       set will-turn? "maybe"
     ]
 
-    comprovar-cruse
+    check-crossing
 
     ;whether traffic lights show red or green
     ifelse not any? (luces-Derc-on patch-ahead 1.5) with [color = red] and not any? (lightsL-on patch-ahead 1.5) with [color = red]
@@ -577,7 +575,7 @@ to mover-carros
   ]
 end
 
-to comprovar-cruse
+to check-crossing
 
   if [Rol-ejerce] of patch-ahead 1 = "crossing" and will-stop? = "maybe"[
     if [used] of patch-ahead 1 = 0 and will-stop? = "maybe"[
@@ -654,28 +652,34 @@ to mover-personas
   ]
 
 end
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MOVIMINETO DE LAS PERSONAS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 to walk
-  ifelse [Rol-ejerce] of patch-ahead 1 = "sidewalk" or [Rol-ejerce] of patch-ahead 1 = "waitpoint" [
+  ifelse [Rol-ejerce] of patch-ahead 1 = "PasoPeatonal" or [Rol-ejerce] of patch-ahead 1 = "waitpoint" [
     ifelse any? other persona-on patch-ahead 1 [
-      rt random 45
-      lt  random 45
+      rt random 45   ;gira de foma aleatoria entre un intervalo de 0 a 44 grados
+      lt  random 45  ;avanza de forma aeatoria  entre un intervalo de 0 44 paso
       set walk-time walk-time + 1
     ]
-    [fd velocidad-persona  / 200 set walk-time walk-time + 1]
-  ]
-  [
-    rt random 120
-    lt random 120
-    if [Rol-ejerce] of patch-ahead 1 = "sidewalk" or [Rol-ejerce] of patch-ahead 1 = "waitpoint" [
-      fd velocidad-persona / 200
-    ]
-    set walk-time walk-time + 1
+      [fd velocidad-persona  / 200  ; velocidad a la que se mueve la persona
+      set walk-time walk-time + 1] ; tiempo
+      ]
+    [
+    rt random 120 ;gira de foma aleatoria entre un intervalo de 0 a 120 grados
+    lt random 120 ;avanza de forma aeatoria  entre un intervalo de 0 120 paso
+
+    ;set walk-time walk-time + 1
+
   ]
 end
 
-to CruzarCalle
 
+to CruzarCalle
+  ;contorla que las personas solocrucen por el paso de peatones
+  if crossing-part = 1[
+    face min-one-of patches with [Rol-ejerce = "waitpoint2"] in-radius 4 [abs([xcor] of myself - pxcor)]
+    ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used + 1]
+    set crossing-part 2
+  ]
   if crossing-part = 2 [
     if heading > 315 and heading < 45 [set heading 0]
     if heading > 45 and heading < 135 [set heading 90]
@@ -787,7 +791,7 @@ num_carros
 num_carros
 0
 200
-3
+56
 1
 1
 NIL
@@ -862,7 +866,7 @@ num_personas
 num_personas
 0
 1000
-51
+38
 1
 1
 NIL
