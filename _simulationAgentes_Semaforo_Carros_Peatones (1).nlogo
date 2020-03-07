@@ -6,12 +6,12 @@ breed[lightsU lightU]
 breed[lightsD lightD]
 breed[persona people]
 patches-own[
-  Rol-ejerce        ;;the role of the patch
+  Rol-ejerce        ;;el rol que ejerce
   will-cross?    ;;Alguien va a cruzar este cruce
   used           ;;dice cuántos 0peatones están usando este cruce
   traffic        ;;dice cuántos coches cruzarán este cruce, si el tráfico > 0, es peligroso para los peatones
 ]
-globals[
+globals[         ;; variable global denominada puntaje
   redV           ;;esta variable se utiliza para cambiar los semáforos... significa cuántas veces hubo rojo en la dirección vertical
   greenV         ;;¿cuántas veces hubo verde en la dirección vertical
   redH           ;;cuántas veces hubo rojo en la dirección horizontal
@@ -19,17 +19,17 @@ globals[
   V_Limite     ;;la velocidad máxima global en la ciudad
 
 ]
-persona-own[
-  velocidad-persona        ;;velocidad actual de la persona
+persona-own[     ;;variable de velocidad
+  velocidad-persona ;;velocidad actual de la persona
   walk-time      ;;cuánto tiempo caminarán antes de cruzar la carretera
   crossing-part  ;;divide el cruce en partes
   waiting?       ;;¿está el peatón esperando para cruzar la calle?
 
 ]
 
-carros-own[
-  velocidad-carros           ;;la velocidad actual del coche
-  velocidad-Maxima       ;;cada coche tiene su propia velocidad máxima dependiendo de la velocidad máxima global (un poco más baja o más alta)
+carros-own[        ;;variable de velocidad
+  velocidad-carros ;;la velocidad actual del coche
+  velocidad-Maxima ;;cada coche tiene su propia velocidad máxima dependiendo de la velocidad máxima global (un poco más baja o más alta)
   will-turn?     ;;si el coche va a girar o no
   turnX          ;;coordenadas de la zona donde el coche cambiará su dirección al girar a la izquierda
   turnY          ;;coordenadas de la zona donde el coche cambiará su dirección al girar a la izquierda
@@ -40,28 +40,28 @@ carros-own[
 
 to configurar                     ;; inicia la configuracion
   ca
-  set V_Limite velocidad-limite ;; establecer el límite de velocidad
-  dibujar-acera              ;;  dibujar la acera
+  set V_Limite velocidad-limite   ;; establecer el límite de velocidad
+  dibujar-acera                   ;;  dibujar la acera
   dibujar-caminos                 ;; dibujar caminos
   dibujar-paso-peatonal           ;; dibujar cruces peatonales
-  colocar-carros                 ;; colocar los coches
-  colocar-luces              ;; luces de posicion
-  colocar-personas              ;; colocar a la gente
+  colocar-carros                  ;; colocar los coches
+  colocar-luces                   ;; luces de posicion
+  colocar-personas                ;; colocar a la gente
   ask patches [parcela_fondo]
   reset-ticks
   tick
 
 end
 
-to ejecutar                        ;; ir
-  mover-carros                  ;; mueve los carros
-  controlar-semaforos     ;; controlar los semáforos
-  mover-personas               ;; mueve las personas
+to ejecutar                        ;; para ejecutar (correr el procedimiento)
+  mover-carros                     ;; mueve los carros
+  controlar-semaforos              ;; controlar los semáforos
+  mover-personas                   ;; mueve las personas
 
   tick
 end
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Algoritmo para el control de Semaforos ::::::::::;;;;;
 to controlar-semaforos
   if ticks mod (50 * intervalo_luces * greenH + 65 * intervalo_luces * redH ) = 0
      [CambiarColor luces-Derc "H" cambiarColor lightsL "H"]
@@ -110,17 +110,17 @@ end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Procedimientos de configuración;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to dibujar-caminos ;; caminos sin asfaltar
-  ;create crossroads ;;;; crear encrucijadas
-  ask patches with [(pxcor mod 40 = 39 or pxcor mod 40 = 0 or pxcor mod 40 = 36 or pxcor mod 40 = 37 or pxcor mod 40 = 38 )
+to dibujar-caminos
+ ;;;; crear encrucijadas;;;;
+  ask patches with [(pxcor mod 40 = 39 or pxcor mod 40 = 0 or pxcor mod 40 = 36 or pxcor mod 40 = 37 or pxcor mod 40 = 38 );; pide ala
     and (pycor mod 22 = 21 or pycor mod 22 = 0 or pycor mod 22 = 19 or pycor mod 22 = 18 or pycor mod 22 = 20)] [
   set pcolor 2
   set Rol-ejerce"crossroad"
     ]
 
-  ;roads-up ;;;; caminos hacia arriba
+   ;;;; crear caminos hacia arriba;;;;;
   ask patches with [pxcor mod 40 = 39 and Rol-ejerce != "crossroad"] [
-    set pcolor  2
+    set pcolor  2 ; se obtiene el color
     sprout 1 [
       set shape "road2"
       set color  2
@@ -139,7 +139,7 @@ to dibujar-caminos ;; caminos sin asfaltar
     ]
     set Rol-ejerce"road-up"]
 
-  ;roads-down   ;;; caminos hacia abajo
+  ;caminos hacia abajo
   ask patches with [pxcor mod 40 = 36 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
@@ -160,7 +160,7 @@ to dibujar-caminos ;; caminos sin asfaltar
     ]
     set Rol-ejerce"road-down"]
 
-  ;roads-right;;;;; caminos a la derecha
+  ;; caminos a la derecha
   ask patches with [pycor mod 22 = 21 and Rol-ejerce != "crossroad"] [
     set pcolor 2
     sprout 1 [
@@ -248,7 +248,7 @@ end
 to dibujar-paso-peatonal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CRUCES PEATONAL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; crear pares de cruces en las carreteras de arriba
-  ask patches with [(Rol-ejerce = "road-up" or Rol-ejerce = "road-down" or Rol-ejerce = "road-middle-v") and (pycor mod 22 = 8 or pycor mod 22 = 9)][
+  ask patches with [(Rol-ejerce = "road-up" or Rol-ejerce = "road-down" or Rol-ejerce = "road-middle-v") and (pycor mod 22 = 8 or pycor mod 22 = 9)][;; pide al pathches la ubicacion con coordenadas para ser dibujada
     sprout-crossings 1 [
       set shape "crossing"
       set color white
@@ -257,24 +257,21 @@ to dibujar-paso-peatonal
     ]
   ]
 
-  ;make a random position of crossings on roads-up;;;; hacer una posición aleatoria de los cruces en los caminos hacia arriba
-  ask crossings with [pxcor mod 40 = 38] [
+;;; hacer una posición aleatoria de los cruces en los caminos hacia arriba
+  ask crossings with [pxcor mod 40 = 38] [ ;; pide a los cruces con las coordenadas de posicion
     let newY one-of [1 -1]
     ask crossings in-radius 3 with [shape = "crossing"] [
       set ycor ycor + newY
     ]
   ]
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;crear puntos de espera para los peatones;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;create waitpoints for pedestrians
+;;crear puntos de espera para los peatones;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ask crossings with [pxcor mod 40 = 38] [
     set shape "waitpoint"
     set Rol-ejerce"waitpoint2"
     set color green + 1
     stamp die
   ]
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;crear pares de cruces en las carreteras de abajo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-  ;create pairs of crossings on roads-down
+;;;crear pares de cruces en las carreteras de abajo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ask patches with [(Rol-ejerce = "road-left" or Rol-ejerce = "road-right" or Rol-ejerce = "road-middle-h") and (pxcor mod 40 = 18 or pxcor mod 40 = 19)][
     sprout-crossings 1 [
       set shape "crossing"
@@ -284,7 +281,7 @@ to dibujar-paso-peatonal
     ]
   ]
 ;;;;;;;;;;;;;;;;;hacer una posición aleatoria de los cruces en las carreteras de abajo;;;;;;;;;;
-  ;make a random position of crossings on roads-down
+
   ask crossings with [pycor mod 22 = 20] [
     let newX one-of [1 2 3 4 5 -1 -2 -3 -4 -5]
     ask crossings in-radius 3 with [shape = "crossing"] [
@@ -301,7 +298,6 @@ to dibujar-paso-peatonal
     stamp die
   ]
 
-  ;necessary row for crossings on the edges (function in-radius doesn't work)
   ;;fila necesaria para los cruces en los bordes (la función en el radio no funciona)
   ask crossings [
     set will-cross? false
@@ -320,14 +316,13 @@ to dibujar-paso-peatonal
 end
 
 to colocar-carros
-
-  ;make a random placement of cars
+  ;;;hacer una colocación aleatoria de los coches
   ask n-of (num_carros / 3) patches with [Rol-ejerce = "road-up"] [
     if not any? carros-on patch pxcor (pycor + 1) and not any? carros-here and not any? carros-on patch pxcor (pycor - 1) and not any? patches with [Rol-ejerce = "crossing"] in-radius 2 [
       sprout-carros 1 [
         set size 2
         set will-turn? "maybe"
-        set will-stop? "maybe"
+        set will-stop? "maybe" ;; se detendra
         set shape "car top"
         set politeness basic-politeness + random (101 - basic-politeness)
         if random 100 > basic-politeness [set politeness random 21]
@@ -454,9 +449,9 @@ to colocar-luces
   set greenV 1
 
 end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Car procedures ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Procedimiento de los carros ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 to control-velocidad
   let car-ahead one-of carros-on patch-ahead 1.5
   ifelse car-ahead = nobody  [
@@ -489,8 +484,8 @@ to control-velocidad
     ]
   ]
 end
-
-to-report can-turn-right?
+;;;;;POSICIONES DONDE SE PRODUCIRA EL GIRO HACIA LA DERECHA
+to-report puede-girar-derecha?
   if pxcor mod 40 = 0 and pycor mod 22 = 18 and heading = 0 [report true]
   if pxcor mod 40 = 36 and pycor mod 22 = 0 and heading = 180 [report true]
   if pxcor mod 40 = 36 and pycor mod 22 = 18 and heading = 90 [report true]
@@ -499,7 +494,7 @@ to-report can-turn-right?
 end
 
 
-;;;;;PSOSICIONES DONDE SE PRODUCIRA EL GIRO
+;;;;;POSICIONES DONDE SE PRODUCIRA EL GIRO HACIA LA IZQUIERDA
 to-report puede-girar-izquierda?
   if pxcor mod 40 = 39 and pycor mod 22 = 18 and heading = 0 [report true]
   if pxcor mod 40 = 37 and pycor mod 22 = 0 and heading = 180 [report true]
@@ -512,7 +507,7 @@ to mover-carros
   ask carros [
     control-velocidad
     if will-turn? = "maybe" [
-      if can-turn-right? [
+      if puede-girar-derecha? [
         ifelse random 100 < probabilidad-giro [
           set will-turn? "yesR"
           move-to patch-ahead 0 rt 35
@@ -566,9 +561,9 @@ to mover-carros
       set will-turn? "maybe"
     ]
 
-    check-crossing
+    check-crossing    ;; controla el cruce
 
-    ;whether traffic lights show red or green
+    ;;Si los semáforos se muestran rojos o verdes...
     ifelse not any? (luces-Derc-on patch-ahead 1.5) with [color = red] and not any? (lightsL-on patch-ahead 1.5) with [color = red]
     and not any? (lightsD-on patch-ahead 1.5) with [color = red] and not any? (lightsU-on patch-ahead 1.5) with [color = red] [fd  velocidad-carros / 200 ] [set  velocidad-carros 0]
 
@@ -617,7 +612,7 @@ to check-crossing
 
 end
 
-;it is safe to turn left, that means no cars that I could hit while turning left
+;;Es seguro girar a la izquierda, lo que significa que no hay coches que pueda chocar al girar a la izquierda.
 to-report safe-to-turn?
   if not any? carros-on patch-right-and-ahead 1 5 and not any? carros-on patch-right-and-ahead 1 6 and
   not any? carros-on patch-right-and-ahead 10 7 and not any? carros-on patch-right-and-ahead 10 8 and
@@ -633,7 +628,12 @@ to check-pedestrians
 
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; People's procedures ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Procedimientos de las Personas;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 to mover-personas
   ask persona [
@@ -666,15 +666,14 @@ to walk
     [
     rt random 120 ;gira de foma aleatoria entre un intervalo de 0 a 120 grados
     lt random 120 ;avanza de forma aeatoria  entre un intervalo de 0 120 paso
-
-    ;set walk-time walk-time + 1
+    set walk-time walk-time + 1
 
   ]
 end
 
 
 to CruzarCalle
-  ;contorla que las personas solocrucen por el paso de peatones
+  ;controla que las personas solocrucen por el paso de peatones
   if crossing-part = 1[
     face min-one-of patches with [Rol-ejerce = "waitpoint2"] in-radius 4 [abs([xcor] of myself - pxcor)]
     ask patches in-cone 3 180 with [Rol-ejerce = "crossing"] [set used used + 1]
@@ -715,9 +714,6 @@ to CruzarCalle
       ]
     ]
   ]
-
-
-
 
 end
 @#$#@#$#@
@@ -791,7 +787,7 @@ num_carros
 num_carros
 0
 200
-56
+150
 1
 1
 NIL
@@ -806,7 +802,7 @@ intervalo_luces
 intervalo_luces
 1
 50
-5
+1
 1
 1
 NIL
@@ -866,7 +862,7 @@ num_personas
 num_personas
 0
 1000
-38
+51
 1
 1
 NIL
@@ -907,7 +903,7 @@ tiempo-cruce-pers
 tiempo-cruce-pers
 400
 5000
-400
+4918
 1
 1
 NIL
