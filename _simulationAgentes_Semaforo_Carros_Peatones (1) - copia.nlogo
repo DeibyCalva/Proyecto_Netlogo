@@ -259,7 +259,7 @@ to dibujar-paso-peatonal
 
 ;;; hacer una posición aleatoria de los cruces en los caminos hacia arriba
   ask crossings with [pxcor mod 40 = 38] [ ;; pide a los cruces con las coordenadas de posicion
-    let newY one-of [1 -1]
+    let newY one-of [-1 -1]
     ask crossings in-radius 3 with [shape = "crossing"] [
       set ycor ycor + newY
     ]
@@ -283,7 +283,7 @@ to dibujar-paso-peatonal
 ;;;;;;;;;;;;;;;;;hacer una posición aleatoria de los cruces en las carreteras de abajo;;;;;;;;;;
 
   ask crossings with [pycor mod 22 = 20] [
-    let newX one-of [1 2 3 4 5 -1 -2 -3 -4 -5]
+    let newX one-of [2 2]
     ask crossings in-radius 3 with [shape = "crossing"] [
       set xcor xcor + newX
     ]
@@ -794,10 +794,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-143
-183
-176
+1130
+579
+1302
+612
 intervalo_luces
 intervalo_luces
 1
@@ -809,10 +809,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-176
-183
-209
+13
+145
+185
+178
 acceleration
 acceleration
 0
@@ -824,10 +824,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-209
-183
-242
+13
+178
+185
+211
 deceleration
 deceleration
 0
@@ -839,10 +839,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-242
-183
-275
+13
+211
+185
+244
 velocidad-limite
 velocidad-limite
 30
@@ -869,10 +869,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-275
-183
-308
+13
+244
+185
+277
 probabilidad-giro
 probabilidad-giro
 0
@@ -884,10 +884,10 @@ NIL
 HORIZONTAL
 
 SWITCH
-35
-389
-176
-422
+37
+358
+178
+391
 girar-izquierda?
 girar-izquierda?
 0
@@ -895,10 +895,10 @@ girar-izquierda?
 -1000
 
 SLIDER
-11
-307
-195
-340
+13
+276
+197
+309
 tiempo-cruce-pers
 tiempo-cruce-pers
 400
@@ -910,10 +910,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-340
-183
-373
+13
+309
+185
+342
 basic-politeness
 basic-politeness
 0
