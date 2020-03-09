@@ -254,6 +254,7 @@ to dibujar-paso-peatonal
       set color white
       set heading 0
       set size 1
+
     ]
   ]
 
