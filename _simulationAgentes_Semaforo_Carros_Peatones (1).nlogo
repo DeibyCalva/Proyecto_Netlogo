@@ -51,6 +51,7 @@ to configurar                     ;; inicia la configuracion
   ask patches [parcela_fondo]
   reset-ticks
   tick
+  
 
 
 end
